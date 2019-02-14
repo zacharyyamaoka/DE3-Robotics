@@ -5,6 +5,7 @@ import copy
 import rospy
 import moveit_commander
 import moveit_msgs.msg
+import tf
 import geometry_msgs.msg
 from math import pi
 from std_msgs.msg import String, Float64
@@ -38,7 +39,13 @@ def move_arm_handler(req):
     # eef_link = group.get_end_effector_link()
     # print "============ End effector: %s" % eef_link
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w = 1.0
+    quaternion = tf.transformations.quaternion_from_euler(req.x, req.y, req.z) #(roll, pitch, yaw)
+    #type(pose) = geometry_msgs.msg.Pose
+    pose_goal.orientation.x = quaternion[0]
+    pose_goal.orientation.y = quaternion[1]
+    pose_goal.orientation.z = quaternion[2]
+    pose_goal.orientation.w = quaternion[3]
+
     pose_goal.position.x = req.x
     pose_goal.position.y = req.y
     pose_goal.position.z = req.z
@@ -52,7 +59,6 @@ def move_arm_handler(req):
     return True
 
 
-s = rospy.Service('move_arm', MoveArm, move_arm_handler)
+move_arm_s = rospy.Service('move_arm', MoveArm, move_arm_handler)
 
-print "Ready to move arm"
 rospy.spin()

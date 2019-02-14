@@ -17,7 +17,9 @@ def move_brick(req):
     b_z= req.goal_z
     b_wz= req.goal_theta
 
-    # move_arm(b_x,b_y,b_z,0,0,b_wz)
+    move_arm(b_x,b_y,b_z,0,90,b_wz)
+    move_arm(b_x,b_y,b_z,0,90,b_wz)
+
     # Do what ever it takes to move the brick from start to end here
 
     # query move it to go to the brick position + some height
